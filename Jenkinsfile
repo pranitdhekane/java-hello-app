@@ -8,9 +8,9 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build with Maven') {
             steps {
-                sh './mvnw clean package -DskipTests'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
@@ -22,8 +22,14 @@ pipeline {
 
         stage('Docker Run') {
             steps {
-                sh 'docker run -d -p 8080:8080 java-hello-app'
+                sh 'docker run -d -p 8080:8080 --name java-hello-app java-hello-app'
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished.'
         }
     }
 }
