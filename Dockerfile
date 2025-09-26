@@ -1,7 +1,12 @@
-FROM openjdk:17-jdk-alpine
+# Start with a JDK base image
+FROM openjdk:17-jdk-slim
+
+# Set working directory
 WORKDIR /app
-COPY . .
-RUN ./mvnw clean package -DskipTests
-EXPOSE 8080
-CMD ["java", "-jar", "target/demo-0.0.1-SNAPSHOT.jar"]
+
+# Copy JAR built by Maven
+COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
+
+# Run the app
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
