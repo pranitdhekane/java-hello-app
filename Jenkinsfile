@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git 'https://github.com/your-username/java-hello-app.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh './mvnw clean package -DskipTests'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t java-hello-app .'
+            }
+        }
+
+        stage('Docker Run') {
+            steps {
+                sh 'docker run -d -p 8080:8080 java-hello-app'
+            }
+        }
+    }
+}
+
